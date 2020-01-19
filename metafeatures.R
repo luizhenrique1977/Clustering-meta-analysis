@@ -16,7 +16,7 @@ log_number_ex <- function(ds){
 }
 
 #2 log10 number of features
-number_ftr <- function(ds){
+log_number_ftr <- function(ds){
   return(round(log(dim(ds)[2], 10), 4))
 }
 
@@ -104,7 +104,7 @@ eigen_cent_mst <- function(ds){
 net_dens_mst <- function(ds) {
   graph <- igraph::as.undirected(igraph::graph.adjacency(as.matrix(dist(ds)), weighted=TRUE))
   mst <- igraph::as.undirected(igraph::mst(graph))
-  density <- igraph::graph.density(graph)
+  density <- igraph::graph.density(mst)
   return(round(density, 4))
 }
 
@@ -112,13 +112,13 @@ net_dens_mst <- function(ds) {
 clust_coef_mst <- function(ds) {
   graph <- igraph::as.undirected(igraph::graph.adjacency(as.matrix(dist(ds)), weighted=TRUE))
   mst <- igraph::as.undirected(igraph::mst(graph))
-  clust_coef <- igraph::transitivity(graph, type="global", isolates="zero")
+  clust_coef <- igraph::transitivity(mst, type="global", isolates="zero")
   return(round(clust_coef, 4))
 }
 
-## testing functions ##
+## testing functions... ##
 log_number_ex(ds)
-number_ftr(ds)
+log_number_ftr(ds)
 ratio_ex_ftr(ds)
 abs_mvn_skewness(ds)
 abs_mvn_kurtosis(ds)
