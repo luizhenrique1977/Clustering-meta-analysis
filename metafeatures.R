@@ -25,16 +25,16 @@ ratio_ex_ftr <- function(ds){
   return(round(dim(ds)[1]/dim(ds)[2], 4))
 }
 
-#4 absolute multivariate normality skewness (MVN package)
-abs_mvn_skewness <- function(ds){
+#4 multivariate normality skewness (MVN package)
+mvn_skewness <- function(ds){
   result <- MVN::mvn(data = ds, mvnTest = "mardia")
-  return(round(abs(varhandle::unfactor(result[[1]][1, 2])), 4))
+  return(round(varhandle::unfactor(result[[1]][1, 2]), 4))
 } 
 
-#5 absolute multivariate normality kurtosis (MVN package)
-abs_mvn_kurtosis <- function(ds){
+#5 multivariate normality kurtosis (MVN package)
+mvn_kurtosis <- function(ds){
   result <- MVN::mvn(data = ds, mvnTest = "mardia")
-  return(round(abs(varhandle::unfactor(result[[1]][2, 2])), 4))
+  return(round(varhandle::unfactor(result[[1]][2, 2]), 4))
 } 
 
 #6 multivariate normality (MVN package)
@@ -100,28 +100,40 @@ eigen_cent_mst <- function(ds){
   return(round(ec$value, 4))
 }
 
-#14 network density of minimum spanning tree
-net_dens_mst <- function(ds) {
-  graph <- igraph::as.undirected(igraph::graph.adjacency(as.matrix(dist(ds)), weighted=TRUE))
-  mst <- igraph::as.undirected(igraph::mst(graph))
-  density <- igraph::graph.density(mst)
+# epsilon-NN function
+enn <- function(ds, e) {
+  dst <- as.matrix(dist(ds))
+  for(i in 1:nrow(ds)) {
+    a <- names(sort(dst[i,])[1:(e+1)])
+    b <- rownames(ds)
+    dst[i, setdiff(rownames(ds), intersect(a, b))] <- 0
+  }
+  return(dst)
+}
+
+#14 network density 
+net_dens <- function(ds) {
+  dst <- enn(ds, 0.15*nrow(ds))
+  graph <- igraph::graph.adjacency(dst, mode="undirected", weighted=TRUE)
+  density <- igraph::graph.density(graph)
   return(round(density, 4))
 }
 
-#15 clustering coefficient of minimum spanning tree
-clust_coef_mst <- function(ds) {
-  graph <- igraph::as.undirected(igraph::graph.adjacency(as.matrix(dist(ds)), weighted=TRUE))
-  mst <- igraph::as.undirected(igraph::mst(graph))
-  clust_coef <- igraph::transitivity(mst, type="global", isolates="zero")
+#15 clustering coefficient 
+clust_coef <- function(ds) {
+  dst <- enn(ds, 0.15*nrow(ds))
+  graph <- igraph::graph.adjacency(dst, mode="undirected", weighted=TRUE)
+  clust_coef <- igraph::transitivity(graph, type="global", isolates="zero")
   return(round(clust_coef, 4))
 }
+
 
 ## testing functions... ##
 log_number_ex(ds)
 log_number_ftr(ds)
 ratio_ex_ftr(ds)
-abs_mvn_skewness(ds)
-abs_mvn_kurtosis(ds)
+mvn_skewness(ds)
+mvn_kurtosis(ds)
 multi_norm(ds)
 perc_out(ds)
 avg_pca(ds)
@@ -130,5 +142,6 @@ avg_abs_cor(ds)
 per_low_dist(ds)
 per_high_dist(ds)
 eigen_cent_mst(ds)
-net_dens_mst(ds)
-clust_coef_mst(ds)
+net_dens(ds)
+clust_coef(ds)
+
