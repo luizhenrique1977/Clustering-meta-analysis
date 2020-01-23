@@ -1,10 +1,10 @@
 ### MEASURING COMPLEXITY OF CLUSTERING PROBLEMS ###
 
 library(data.table)
-library(ggplot2)
-library(mlbench)
-library(tseries)
-library("ECoL", lib.loc="~/R/win-library/3.5")
+#library(ggplot2)
+#library(mlbench)
+#library(tseries)
+#library("ECoL", lib.loc="~/R/win-library/3.5")
 setwd('C:/Users/Luiz Henrique/Desktop/Luiz Henrique/Doutorado/Pesquisas de Tese/R/Clustering')
 source('meta_features_functions.R')
 
@@ -27,7 +27,7 @@ for(i in 1:length(names2)){
   ellips_ds[[i]] <- fread(names2[i])
 }
 
-# Importing other datasets - small (90 datasets)
+# Importing other datasets - small (77 datasets)
 setwd('C:/Users/Luiz Henrique/Desktop/Luiz Henrique/Doutorado/Pesquisas de Tese/R/Clustering/Datasets/CSV/Small')
 small_ds <- list()
 names3 = list.files(pattern="*.csv")
@@ -35,7 +35,7 @@ for(i in 1:length(names3)){
   small_ds[[i]] <- fread(names3[i])
 }
 
-# Importing other datasets - medium (35 datasets)
+# Importing other datasets - medium (32 datasets)
 setwd('C:/Users/Luiz Henrique/Desktop/Luiz Henrique/Doutorado/Pesquisas de Tese/R/Clustering/Datasets/CSV/Medium')
 medium_ds <- list()
 names4 = list.files(pattern="*.csv")
@@ -50,15 +50,6 @@ names5 = list.files(pattern="*.csv")
 for(i in 1:length(names5)){
   large_ds[[i]] <- fread(names5[i])
 }
-
-# Importing other datasets - xlarge (1 dataset)
-setwd('C:/Users/Luiz Henrique/Desktop/Luiz Henrique/Doutorado/Pesquisas de Tese/R/Clustering/Datasets/CSV/XLarge')
-xlarge_ds <- list()
-names6 = list.files(pattern="*.csv")
-for(i in 1:length(names6)){
-  xlarge_ds[[i]] <- fread(names6[i])
-}
-
 
 ## Calculating meta-features
 
@@ -167,30 +158,24 @@ for(i in 1:length(large_ds)){
 }
 write.csv(mds5, "mds5.csv")
 
-# CSV xlarge 
-mds6 <- data.frame()
-for(i in 1:length(xlarge_ds)){
-  mds6[i, 1] <- log_number_ex(xlarge_ds[[i]])
-  mds6[i, 2] <- log_number_ftr(xlarge_ds[[i]])
-  mds6[i, 3] <- ratio_ex_ftr(xlarge_ds[[i]])
-  mds6[i, 4] <- mvn_skewness(xlarge_ds[[i]])
-  mds6[i, 5] <- mvn_kurtosis(xlarge_ds[[i]])
-  mds6[i, 6] <- multi_norm(xlarge_ds[[i]])
-  mds6[i, 7] <- perc_out(xlarge_ds[[i]])
-  mds6[i, 8] <- avg_pca(xlarge_ds[[i]])
-  mds6[i, 9] <- ratio_pca(xlarge_ds[[i]])
-  mds6[i, 10] <- avg_abs_cor(xlarge_ds[[i]])
-  mds6[i, 11] <- per_low_dist(xlarge_ds[[i]])
-  mds6[i, 12] <- per_high_dist(xlarge_ds[[i]])
-  mds6[i, 13] <- eigen_cent_mst(xlarge_ds[[i]])
-  mds6[i, 14] <- net_dens(xlarge_ds[[i]])
-  mds6[i, 15] <- clust_coef(xlarge_ds[[i]])
-}
-write.csv(mds6, "mds6.csv")
 
+# generating metadata
 
+setwd('C:/Users/Luiz Henrique/Desktop/Luiz Henrique/Doutorado/Pesquisas de Tese/R/Clustering')
+mds1 <- fread("mds1.csv")
+mds2 <- fread("mds2.csv")
+mds3 <- fread("mds3.csv")
+mds4 <- fread("mds4.csv")
+mds5 <- fread("mds5.csv")
 
+mds1[, 1] <- names1
+mds2[, 1] <- names2
+mds3[, 1] <- names3
+mds4[, 1] <- names4
+mds5[, 1] <- names5
 
+mds <- rbind(mds1, mds2, mds3, mds4, mds5)
+write.csv(mds, "mds.csv", row.names = FALSE)
 
 
 
