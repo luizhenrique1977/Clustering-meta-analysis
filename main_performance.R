@@ -7,11 +7,11 @@ require(data.table)
 #require(hrbrthemes) 
 require(MixGHD) # ARI
 require(EMCluster) # probabilistic model-based clustering
-require(dbscan)
+#require(dbscan)
 require(Gmedian) # k-medians
 require(kmed) # k-medoids
-require(fmsb) # radar graphs
-require(kernlab) # Spectral Clustering
+#require(fmsb) # radar graphs
+#require(kernlab) # Spectral Clustering
 require(ClusterR)
 #require(xtable)
 
@@ -968,7 +968,7 @@ for(i in 1:length(gauss_ds)){
   base <- gauss_ds[[i]][, -(n[i]:n[i])]
   clusters1 <- simple.init(base, nclass = k[i]) # random initialization
   clusters2 <- emcluster(base, clusters1, assign.class = TRUE)
-  mds9.1 <- clusters2[[11]]
+  mds9.1[[i]] <- clusters2[[11]]
 }
 
 v1 <- vector()
@@ -991,7 +991,7 @@ for(i in 1:length(ellips_ds)){
   base <- ellips_ds[[i]][, -(n[i]:n[i])]
   clusters1 <- simple.init(base, nclass = k[i]) # random initialization
   clusters2 <- emcluster(base, clusters1, assign.class = TRUE)
-  mds9.2 <- clusters2[[11]]
+  mds9.2[[i]] <- clusters2[[11]]
 }
 
 v1 <- vector()
@@ -1014,7 +1014,7 @@ for(i in 1:length(small_ds)){
   base <- small_ds[[i]][, -(n[i]:n[i])]
   clusters1 <- simple.init(base, nclass = k[i]) # random initialization
   clusters2 <- emcluster(base, clusters1, assign.class = TRUE)
-  mds9.3 <- clusters2[[11]]
+  mds9.3[[i]] <- clusters2[[11]]
 }
 
 v1 <- vector()
@@ -1037,7 +1037,7 @@ for(i in 1:length(medium_ds)){
   base <- medium_ds[[i]][, -(n[i]:n[i])]
   clusters1 <- simple.init(base, nclass = k[i]) # random initialization
   clusters2 <- emcluster(base, clusters1, assign.class = TRUE)
-  mds9.4 <- clusters2[[11]]
+  mds9.4[[i]] <- clusters2[[11]]
 }
 
 v1 <- vector()
@@ -1060,7 +1060,7 @@ for(i in 1:length(large_ds)){
   base <- large_ds[[i]][, -(n[i]:n[i])]
   clusters1 <- simple.init(base, nclass = k[i]) # random initialization
   clusters2 <- emcluster(base, clusters1, assign.class = TRUE)
-  mds9.5 <- clusters2[[11]]
+  mds9.5[[i]] <- clusters2[[11]]
 }
 
 v1 <- vector()
@@ -1103,7 +1103,7 @@ for(i in 1:length(ellips_ds)){
   n[i] <- dim(ellips_ds[[i]])[2]
   k[i] <- max(ellips_ds[[i]][, n[i]:n[i]])
   clusters <- MiniBatchKmeans(as.matrix(ellips_ds[[i]][, -(n[i]:n[i])]), clusters = k[i])
-  mds10.1[[i]] <- predict_MBatchKMeans(as.matrix(ellips_ds[[i]][, -(n[i]:n[i])]), clusters[[1]], fuzzy = FALSE)
+  mds10.2[[i]] <- predict_MBatchKMeans(as.matrix(ellips_ds[[i]][, -(n[i]:n[i])]), clusters[[1]], fuzzy = FALSE)
 }
 
 v1 <- vector()
@@ -1124,7 +1124,7 @@ for(i in 1:length(small_ds)){
   n[i] <- dim(small_ds[[i]])[2]
   k[i] <- max(small_ds[[i]][, n[i]:n[i]])
   clusters <- MiniBatchKmeans(as.matrix(small_ds[[i]][, -(n[i]:n[i])]), clusters = k[i])
-  mds10.1[[i]] <- predict_MBatchKMeans(as.matrix(small_ds[[i]][, -(n[i]:n[i])]), clusters[[1]], fuzzy = FALSE)
+  mds10.3[[i]] <- predict_MBatchKMeans(as.matrix(small_ds[[i]][, -(n[i]:n[i])]), clusters[[1]], fuzzy = FALSE)
 }
 
 v1 <- vector()
@@ -1145,7 +1145,7 @@ for(i in 1:length(medium_ds)){
   n[i] <- dim(medium_ds[[i]])[2]
   k[i] <- max(medium_ds[[i]][, n[i]:n[i]])
   clusters <- MiniBatchKmeans(as.matrix(medium_ds[[i]][, -(n[i]:n[i])]), clusters = k[i])
-  mds10.1[[i]] <- predict_MBatchKMeans(as.matrix(medium_ds[[i]][, -(n[i]:n[i])]), clusters[[1]], fuzzy = FALSE)
+  mds10.4[[i]] <- predict_MBatchKMeans(as.matrix(medium_ds[[i]][, -(n[i]:n[i])]), clusters[[1]], fuzzy = FALSE)
 }
 
 v1 <- vector()
@@ -1166,7 +1166,7 @@ for(i in 1:length(large_ds)){
   n[i] <- dim(large_ds[[i]])[2]
   k[i] <- max(large_ds[[i]][, n[i]:n[i]])
   clusters <- MiniBatchKmeans(as.matrix(large_ds[[i]][, -(n[i]:n[i])]), clusters = k[i])
-  mds10.1[[i]] <- predict_MBatchKMeans(as.matrix(large_ds[[i]][, -(n[i]:n[i])]), clusters[[1]], fuzzy = FALSE)
+  mds10.5[[i]] <- predict_MBatchKMeans(as.matrix(large_ds[[i]][, -(n[i]:n[i])]), clusters[[1]], fuzzy = FALSE)
 }
 
 v1 <- vector()
