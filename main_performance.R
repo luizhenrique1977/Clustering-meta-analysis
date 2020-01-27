@@ -1410,6 +1410,15 @@ colnames(metadata) <- c("Instances", "feature_number_ex", "feature_number_ftr", 
                         "algo_average", "algo_wards", "algo_closest", "algo_mbkmeans")
 
 
+# negative values adjustment
+metadata <- fread("metadata.csv")
+summary(metadata)
+metadata$feature_kurtosis <- abs(metadata$feature_kurtosis)
+metadata[, 2:25] <- abs(metadata[, 2:25])
+write.csv(metadata, "metadata2.csv", row.names = FALSE)
+
+
+
 # Runtime -----------------------------------------------------------------
 time_kmeans <- c(time_kmeans_gauss, time_kmeans_ellips, time_kmeans_small, time_kmeans_medium, time_kmeans_large)
 time_kmedians <- c(time_kmedians_gauss, time_kmedians_ellips, time_kmedians_small, time_kmedians_medium, time_kmedians_large)
