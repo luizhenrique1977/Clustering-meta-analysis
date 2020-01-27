@@ -844,7 +844,7 @@ for(i in 1:length(medium_ds)){
 mds6.5 <- list()
 n <- vector()
 k <- vector()
-time_average_large <- vectoe()
+time_average_large <- vector()
 for(i in 1:length(large_ds)){
   n[i] <- dim(large_ds[[i]])[2]
   k[i] <- max(large_ds[[i]][, n[i]:n[i]])
@@ -1382,34 +1382,47 @@ for(i in 1:length(large_ds)){
 
 # Generating Metadata -----------------------------------------------------
 
-kmeans_ari <- rbind(kmeans_gaussian, kmeans_ellipsoidal, kmeans_small, kmeans_medium, kmeans_large)
-kmedians_ari <- rbind(kmedians_gaussian, kmedians_ellipsoidal, kmedians_small, kmedians_medium, kmedians_large)
-kmedoids_ari <- rbind(kmedoids_gaussian, kmedoids_ellipsoidal, kmedoids_small, kmedoids_medium, kmedoids_large)
-single_ari <- rbind(single_gaussian, single_ellipsoidal, single_small, single_medium, single_large)
-complete_ari <- rbind(complete_gaussian, complete_ellipsoidal, complete_small, complete_medium, complete_large)
-average_ari <- rbind(average_gaussian, average_ellipsoidal, average_small, average_medium, average_large)
-wards_ari <- rbind(wards_gaussian, wards_ellipsoidal, wards_small, wards_medium, wards_large)
-closest_ari <- rbind(closest_gaussian, closest_ellipsoidal, closest_small, closest_medium, closest_large)
-em_ari <- rbind(em_gaussian, em_ellipsoidal, em_small, em_medium, em_large)
-mbkmeans_ari <- rbind(mbkmeans_gaussian, mbkmeans_ellipsoidal, mbkmeans_small, mbkmeans_medium, mbkmeans_large)
+setwd('C:/Users/Luiz Henrique/Desktop/Luiz Henrique/Doutorado/Pesquisas de Tese/R/Clustering')
 
-ari <- cbind(kmeans_ari, kmedians_ari, kmedoids_ari, single_ari, complete_ari, average_ari, wards_ari, closest_ari, 
-             em_ari, mbkmeans_ari)
-write.csv(ari, "ari.csv")
+kmeans_ari <- c(kmeans_gaussian, kmeans_ellipsoidal, kmeans_small, kmeans_medium, kmeans_large)
+kmedians_ari <- c(kmedians_gaussian, kmedians_ellipsoidal, kmedians_small, kmedians_medium, kmedians_large)
+kmedoids_ari <- c(kmedoids_gaussian, kmedoids_ellipsoidal, kmedoids_small, kmedoids_medium, kmedoids_large)
+single_ari <- c(single_gaussian, single_ellipsoidal, single_small, single_medium, single_large)
+complete_ari <- c(complete_gaussian, complete_ellipsoidal, complete_small, complete_medium, complete_large)
+average_ari <- c(average_gaussian, average_ellipsoidal, average_small, average_medium, average_large)
+wards_ari <- c(wards_gaussian, wards_ellipsoidal, wards_small, wards_medium, wards_large)
+closest_ari <- c(closest_gaussian, closest_ellipsoidal, closest_small, closest_medium, closest_large)
+#em_ari <- c(em_gaussian, em_ellipsoidal, em_small, em_medium, em_large)
+mbkmeans_ari <- c(mbkmeans_gaussian, mbkmeans_ellipsoidal, mbkmeans_small, mbkmeans_medium, mbkmeans_large)
+
+ari <- cbind(kmeans_ari, kmedians_ari, kmedoids_ari, single_ari, complete_ari, average_ari, wards_ari, closest_ari, mbkmeans_ari)
+write.csv(ari, "ari.csv", row.names = FALSE)
+
+mds <- fread("mds.csv")
+ari <- fread("ari.csv")
+metadata <- cbind(mds, ari)
+write.csv(metadata, "metadata.csv", row.names = FALSE)
+colnames(metadata) <- c("Instances", "feature_number_ex", "feature_number_ftr", "feature_ratio_ex_ftr", 
+                        "feature_skewness", "feature_kurtosis", "feature_multi_norm", "feature_perc_out", 
+                        "feature_avg_pca", "feature_ratio_pca", "feature_avg_abs_cor", "feature_low_dist", 
+                        "feature_high_dist", "feature_eigen_cent", "feature_net_dens", "feature_clust_coef",
+                        "algo_kmeans", "algo_kmedians", "algo_kmedoids", "algo_single", "algo_complete",
+                        "algo_average", "algo_wards", "algo_closest", "algo_mbkmeans")
 
 
 # Runtime -----------------------------------------------------------------
-time_kmeans <- rbind(time_kmeans_gauss, time_kmeans_ellips, time_kmeans_small, time_kmeans_medium, time_kmeans_large)
-time_kmedians <- rbind(time_kmedians_gauss, time_kmedians_ellips, time_kmedians_small, time_kmedians_medium, time_kmedians_large)
-time_kmedoids <- rbind(time_kmedoids_gauss, time_kmedoids_ellips, time_kmedoids_small, time_kmedoids_medium, time_kmedoids_large)
-time_single <- rbind(time_single_gauss, time_single_ellips, time_single_small, time_single_medium, time_single_large)
-time_complete <- rbind(time_complete_gauss, time_complete_ellips, time_complete_small, time_complete_medium, time_complete_large)
-time_average <- rbind(time_average_gauss, time_average_ellips, time_average_small, time_average_medium, time_average_large)
-time_wards <- rbind(time_wards_gauss, time_wards_ellips, time_wards_small, time_wards_medium, time_wards_large)
-time_closest <- rbind(time_closest_gauss, time_closest_ellips, time_closest_small, time_closest_medium, time_closest_large)
-time_em <- rbind(time_em_gauss, time_em_ellips, time_em_small, time_em_medium, time_em_large)
-time_mbkmeans <- rbind(time_mbkmeans_gauss, time_mbkmeans_ellips, time_mbkmeans_small, time_mbkmeans_medium, time_mbkmeans_large)
+time_kmeans <- c(time_kmeans_gauss, time_kmeans_ellips, time_kmeans_small, time_kmeans_medium, time_kmeans_large)
+time_kmedians <- c(time_kmedians_gauss, time_kmedians_ellips, time_kmedians_small, time_kmedians_medium, time_kmedians_large)
+time_kmedoids <- c(time_kmedoids_gauss, time_kmedoids_ellips, time_kmedoids_small, time_kmedoids_medium, time_kmedoids_large)
+time_single <- c(time_single_gauss, time_single_ellips, time_single_small, time_single_medium, time_single_large)
+time_complete <- c(time_complete_gauss, time_complete_ellips, time_complete_small, time_complete_medium, time_complete_large)
+time_average <- c(time_average_gauss, time_average_ellips, time_average_small, time_average_medium, time_average_large)
+time_wards <- c(time_wards_gauss, time_wards_ellips, time_wards_small, time_wards_medium, time_wards_large)
+time_closest <- c(time_closest_gauss, time_closest_ellips, time_closest_small, time_closest_medium, time_closest_large)
+#time_em <- c(time_em_gauss, time_em_ellips, time_em_small, time_em_medium, time_em_large)
+time_mbkmeans <- c(time_mbkmeans_gauss, time_mbkmeans_ellips, time_mbkmeans_small, time_mbkmeans_medium, time_mbkmeans_large)
 
-time <- cbind(time_kmeans, time_kmedians, time_kmedoids, time_single, time_complete, time_average, time_wards, time_closest, 
-              time_em, time_mbkmeans)
-write.csv(time, "time.csv")
+time <- cbind(time_kmeans, time_kmedians, time_kmedoids, time_single, time_complete, time_average, time_wards, time_closest, time_mbkmeans)
+write.csv(time, "time.csv", row.names = FALSE)
+
+
